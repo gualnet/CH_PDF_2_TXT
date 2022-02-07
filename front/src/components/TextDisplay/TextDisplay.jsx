@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Container, Paper } from '@mui/material';
+import { Container, Paper, CircularProgress } from '@mui/material';
 import PropTypes from 'prop-types';
 
 import './TextDisplay.scss';
@@ -13,6 +13,7 @@ import CONFIG from '../../lib/CONFIG';
  */
 const TextDisplay = (props) => {
   const [textToDisplay, setTextToDisplay] = useState('.');
+  const [isLoading, setIsLoading] = useState(false);
 
   const formatTextToDisplay = (textArray) => {
     const formatedTextArr = [];
@@ -26,6 +27,7 @@ const TextDisplay = (props) => {
       ));
     });
     setTextToDisplay(formatedTextArr);
+    setIsLoading(false);
   };
 
   const fetchTextFromUploadedFile = useCallback(async (filename) => {
@@ -36,15 +38,19 @@ const TextDisplay = (props) => {
         formatTextToDisplay(jsonRes.textArray);
       } else {
         setTextToDisplay();
+        setIsLoading(false);
         alert('Sorry an error occurred');
       }
     } catch (error) {
       console.error('[ERROR]', error);
+      setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
     if (!props.uploadResult) return;
+    setIsLoading(true);
+    setTextToDisplay();
     fetchTextFromUploadedFile(props.uploadResult.filename);
   }, [props.uploadResult]);
 
@@ -55,6 +61,9 @@ const TextDisplay = (props) => {
         id='text-container'
         elevation={4}
       >
+        {isLoading &&
+          <CircularProgress id='progress-bar' />
+        }
         {textToDisplay}
       </Paper>
     </Container>
