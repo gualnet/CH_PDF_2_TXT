@@ -1,10 +1,9 @@
 import React, { useRef } from 'react';
 import { Button, Container } from '@mui/material';
-import CONFIG from '../../lib/CONFIG';
 import PropTypes from 'prop-types';
 
-
 import './UploadForm.scss';
+import CONFIG from '../../lib/CONFIG';
 
 /**
  * 
@@ -25,7 +24,6 @@ const UploadForm = (props) => {
       const formData = new FormData();
       formData.append('file', fileData);
 
-      console.log('REQUEST POST: ', `${CONFIG.apiBaseURL}/pdf/upload`);
       const fetchResult = await fetch(
         `${CONFIG.apiBaseURL}/pdf/upload`,
         {
@@ -33,11 +31,9 @@ const UploadForm = (props) => {
           body: formData,
         }
       );
-      console.log('fetchResult', fetchResult);
 
       if (fetchResult.ok) {
         const jsonResult = await fetchResult.json();
-        console.log('jsonResult', jsonResult);
         props.setUploadResult(jsonResult);
       } else {
         alert('Oops an unknow error occured, please retry !');
@@ -51,8 +47,6 @@ const UploadForm = (props) => {
   }
 
   const inputOnChangeHandler = (ev) => {
-    console.log('inputOnChangeHandler', ev);
-
     const filesObj = ev.target.files;
     if (filesObj.length < 1) {
       inputRef.current.value = '';
@@ -66,13 +60,12 @@ const UploadForm = (props) => {
       return;
     }
 
-    console.log('uploadedFile', uploadedFile);
     sendUploadedFile(uploadedFile);
   };
 
   return (
     <Container id='form-container'>
-      <h2 id='form-title'>MY UPLOAD FORM</h2>
+      <h2 id='form-title'>PDF 2 TEXT</h2>
       <label id='form-btn-container'>
         <input
           ref={inputRef}
