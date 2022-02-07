@@ -3,6 +3,7 @@
 const http = require('http');
 const express = require('express')
 const morgan = require('morgan');
+const CORS = require('cors');
 
 const PORT = 5000;
 
@@ -10,7 +11,8 @@ const PORT = 5000;
 const app = express();
 const server = http.Server(app);
 
-app.use(morgan('dev')) // logger
+app.use(morgan('dev')); // logger
+app.use(CORS({ origin: 'http://localhost:3000' }));
 
 // app.use(express.static('./static'));
 

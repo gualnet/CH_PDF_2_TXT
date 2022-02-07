@@ -1,12 +1,63 @@
 import { Button, Container } from '@mui/material';
-import React from 'react';
+import React, { useRef } from 'react';
+import CONFIG from '../../lib/CONFIG';
 
 import './UploadForm.scss';
 
 const UploadForm = () => {
 
+  const inputRef = useRef();
+
+  /**
+   * sends the file to the server
+   * @param {*} fileData 
+   */
+  const sendUploadedFile = async (fileData) => {
+
+    try {
+      // create a form data object to send the file
+      const formData = new FormData();
+      formData.append('file', fileData);
+
+      console.log('REQUEST POST: ', `${CONFIG.apiBaseURL}/pdf/upload`);
+      const fetchResult = await fetch(
+        `${CONFIG.apiBaseURL}/pdf/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+      console.log('fetchResult', fetchResult);
+
+      if (fetchResult.ok) {
+        const jsonResult = await fetchResult.json();
+        console.log('jsonResult', jsonResult);
+      }
+
+    } catch (error) {
+      console.error('[ERROR]', error);
+    }
+
+  }
+
   const inputOnChangeHandler = (ev) => {
     console.log('inputOnChangeHandler', ev);
+
+    const filesObj = ev.target.files;
+    if (filesObj.length < 1) {
+      inputRef.current.value = '';
+      return;
+    }
+
+    const uploadedFile = filesObj[0];
+    if (uploadedFile.type !== 'application/pdf') {
+      inputRef.current.value = '';
+      alert('This file type is not allowed !');
+      return;
+    }
+
+    console.log('uploadedFile', uploadedFile);
+    sendUploadedFile(uploadedFile);
   };
 
   return (
@@ -14,6 +65,7 @@ const UploadForm = () => {
       <h2 id='form-title'>MY UPLOAD FORM</h2>
       <label id='form-btn-container'>
         <input
+          ref={inputRef}
           type='file'
           name='upload'
           accept='application/pdf'
