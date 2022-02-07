@@ -35,8 +35,8 @@ module.exports = {
       const documentProxy = await pdfjs.getDocument(file).promise;
       console.log('documentProxy', documentProxy);
 
-      const pagesStrings = Array.from(Array(numberOfPages), () => new Array(''));
       const numberOfPages = documentProxy.numPages;
+      const pagesStrings = Array.from(Array(numberOfPages), () => new Array(''));
 
       // loop pages to get the needed content
       for (let pageIdx = 0; pageIdx < numberOfPages; pageIdx++) {
@@ -63,6 +63,7 @@ module.exports = {
 
     } catch (error) {
       console.error('[ERROR]', error);
+      res.status(400).json({ message: error.message });
     }
   },
 };

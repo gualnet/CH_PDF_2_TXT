@@ -1,11 +1,17 @@
-import { Button, Container } from '@mui/material';
 import React, { useRef } from 'react';
+import { Button, Container } from '@mui/material';
 import CONFIG from '../../lib/CONFIG';
+import PropTypes from 'prop-types';
+
 
 import './UploadForm.scss';
 
-const UploadForm = () => {
-
+/**
+ * 
+ * @param {UploadFormProps} props 
+ * @returns 
+ */
+const UploadForm = (props) => {
   const inputRef = useRef();
 
   /**
@@ -32,6 +38,10 @@ const UploadForm = () => {
       if (fetchResult.ok) {
         const jsonResult = await fetchResult.json();
         console.log('jsonResult', jsonResult);
+        props.setUploadResult(jsonResult);
+      } else {
+        alert('Oops an unknow error occured, please retry !');
+        props.setUploadResult();
       }
 
     } catch (error) {
@@ -83,5 +93,14 @@ const UploadForm = () => {
     </Container>
   );
 };
+
+UploadForm.propTypes = {
+  setUploadResult: PropTypes.func,
+};
+
+/**
+ * @typedef {object} UploadFormProps
+ * @property {Function} setUploadResult
+ */
 
 export default UploadForm;
