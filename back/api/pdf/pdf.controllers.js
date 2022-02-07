@@ -37,6 +37,8 @@ module.exports = {
       // loop pages to get the needed content
       for (let pageIdx = 0; pageIdx < numberOfPages; pageIdx++) {
         const pdfPage = await documentProxy.getPage(pageIdx + 1);
+
+        const pageTextContent = await pdfPage.getTextContent();
         pageTextContent.items.map(item => {
           pagesStrings[pageIdx].push(item.str);
         })

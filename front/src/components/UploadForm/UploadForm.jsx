@@ -25,7 +25,7 @@ const UploadForm = (props) => {
       formData.append('file', fileData);
 
       const fetchResult = await fetch(
-        `${CONFIG.apiBaseURL}/pdf/upload`,
+        `${CONFIG.apiBaseURL}/pdf`,
         {
           method: 'POST',
           body: formData,
