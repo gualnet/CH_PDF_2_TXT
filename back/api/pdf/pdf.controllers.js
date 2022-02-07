@@ -40,29 +40,17 @@ module.exports = {
 
       // loop pages to get the needed content
       for (let pageIdx = 0; pageIdx < numberOfPages; pageIdx++) {
-        // console.log('\nPage: ', pageIdx + 1)
         const pdfPage = await documentProxy.getPage(pageIdx + 1);
-        console.log('pdfPage', pdfPage);
-
-        const pageStructure = await pdfPage.getStructTree();
-        // console.log('pageStructure', pageStructure);
-
-        const GET_SOMETHING = await pdfPage.commonObjs
-        // console.log('GET_SOMETHING', GET_SOMETHING);
+        // console.log('pdfPage', pdfPage);
 
         const pageTextContent = await pdfPage.getTextContent();
         // console.log('pageTextContent', pageTextContent);
         pageTextContent.items.map(item => {
-          // if (item.str && item.str !== '' && item.str !== ' ') {
           pagesStrings[pageIdx].push(item.str);
-          // }
         })
       }
 
-
       for (let i = 0; i < pagesStrings.length; i++) {
-        console.log('\n----------');
-        console.log('PAGE', i + 1)
         pagesStrings[i] = pagesStrings[i].join(' ');
         console.log(pagesStrings[i]);
       }
