@@ -12,31 +12,27 @@ import CONFIG from '../../lib/CONFIG';
  * @returns 
  */
 const TextDisplay = (props) => {
-  console.log('PROPS', props)
-  const [textToDisplay, setTextToDisplay] = useState('NONE');
+  const [textToDisplay, setTextToDisplay] = useState('.');
 
   const formatTextToDisplay = (textArray) => {
-    const merged = [];
+    const formatedTextArr = [];
     textArray?.map((pageText, pidx) => {
-      console.log('<>', pageText);
       const lines = pageText.split('\n');
-      lines.map((line, lidx) => merged.push(
+      lines.map((line, lidx) => formatedTextArr.push(
         <div key={`${pidx}-${lidx}`}>
           {line}
           <br></br>
-        </div >));
+        </div >
+      ));
     });
-    setTextToDisplay(merged);
+    setTextToDisplay(formatedTextArr);
   };
 
   const fetchTextFromUploadedFile = useCallback(async (filename) => {
-    console.log('fetchTextFromUploadedFile')
     try {
       const fetchRes = await fetch(`${CONFIG.apiBaseURL}/pdf/text/${filename}`);
-      console.log('fetchRes', fetchRes);
       if (fetchRes.ok) {
         const jsonRes = await fetchRes.json();
-        console.log('jsonRes', jsonRes);
         formatTextToDisplay(jsonRes.textArray);
       } else {
         setTextToDisplay();
@@ -48,7 +44,6 @@ const TextDisplay = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log('useEffect.....')
     if (!props.uploadResult) return;
     fetchTextFromUploadedFile(props.uploadResult.filename);
   }, [props.uploadResult]);

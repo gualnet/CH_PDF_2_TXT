@@ -12,7 +12,6 @@ function App() {
   return (
     <div className="App">
       <Container>
-        MY NEW APP
         <UploadForm
           setUploadResult={setUploadResult}
         />
