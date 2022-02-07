@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  api:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "5000:5000"
+    restart: always
+  
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "3000:3000"
+    restart: always
