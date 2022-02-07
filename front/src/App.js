@@ -3,6 +3,7 @@ import { Container } from '@mui/material';
 
 import './App.css';
 import UploadForm from './components/UploadForm/UploadForm';
+import TextDisplay from './components/TextDisplay/TextDisplay';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Container>
         MY NEW APP
         <UploadForm />
+        <TextDisplay />
       </Container>
     </div>
   );
